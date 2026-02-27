@@ -142,7 +142,9 @@ class ChatService {
 
     // =================== 1.1 process user memories =================== //
 
-    const enableUserMemories = settingsSelectors.memoryEnabled(getUserStoreState());
+    const globalMemoryEnabled = settingsSelectors.memoryEnabled(getUserStoreState());
+    const agentMemoryEnabled = chatConfig.memory?.enabled ?? false;
+    const enableUserMemories = globalMemoryEnabled && agentMemoryEnabled;
     const userMemorySettings = settingsSelectors.currentMemorySettings(getUserStoreState());
     const effectiveMemoryEffort =
       chatConfig.memory?.effort ?? userMemorySettings.effort ?? 'medium';
@@ -423,7 +425,7 @@ class ChatService {
 
     return fetchSSE(API_ENDPOINTS.chat(provider), {
       body: JSON.stringify(payload),
-      fetcher: fetcher,
+      fetcher,
       headers,
       method: 'POST',
       onAbort: options?.onAbort,

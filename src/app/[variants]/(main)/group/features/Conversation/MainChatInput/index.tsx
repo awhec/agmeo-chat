@@ -11,6 +11,7 @@ import { useSendMenuItems } from './useSendMenuItems';
 const leftActions: ActionKeys[] = [
   'model',
   'search',
+  'memory',
   'fileUpload',
   'tools',
   '---',
@@ -33,14 +34,14 @@ const MainChatInput = memo(() => {
 
   return (
     <ChatInput
+      skipScrollMarginWithList
       leftActions={leftActions}
+      rightActions={rightActions}
+      sendMenu={{ items: sendMenuItems }}
       onEditorReady={(instance) => {
         // Sync to global ChatStore for compatibility with other features
         useChatStore.setState({ mainInputEditor: instance });
       }}
-      rightActions={rightActions}
-      sendMenu={{ items: sendMenuItems }}
-      skipScrollMarginWithList
     />
   );
 });
